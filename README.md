@@ -26,8 +26,11 @@ The neural network is implemented with **PyTorch**. For k-nearest neighbor, we u
 ## How to run
 To run the code and reproduce the results in the paper use the help below:
 
+--ker = 1: also run kernel based model (>10mins)
+--rl = 1: use DGP defined in structurel.py where the true CMI need to be re-calculate (TODO)
+
 ### estimate I(X;Y|Z)
-python main.py --d 5 --k 20 --n 80000 --scenario 0 --seed 123
+python main.py --d 5 --k 20 --n 80000 --scenario 0 --seed 123 
 
 ### estimate I(X;Z|Y)
 python main.py --d 3 --k 10 --n 80000 --scenario 1 --seed 123
