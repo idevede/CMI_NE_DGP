@@ -4,7 +4,7 @@ import numpy as np
 import pickle
 from numpy.linalg import det
 
-import CMINE_lib as CMINE
+import CMI_estimation.CMINE_lib as CMINE
 # from Guassian_variables import Data_guassian
 
 import pandas as pd
@@ -20,10 +20,7 @@ import numpy as np
 from sklearn.neighbors import KernelDensity
 
 # %%
-dataset = CMINE.create_dataset_DGP(GenModel='Gaussian_nonZero', Params=0, Dim=5, N=1000)
 
-# %%
-dataset[0].shape
 
 # %%
 import numpy as np
