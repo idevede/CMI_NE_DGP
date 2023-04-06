@@ -1,3 +1,7 @@
+# CDL -- Conditional Mutual Information Neural Estimator
+
+CDL folder aims to run the estimator from Causal Dynamics Learning paper.
+
 # Conditional Mutual Information Neural Estimator
 
 ## Introduction
