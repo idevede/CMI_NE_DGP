@@ -105,6 +105,7 @@ class L1OutUB(nn.Module):  # naive upper bound
                     negative = neg.unsqueeze(-1)
                 else:
                     negative = torch.cat([negative, neg.unsqueeze(-1)], 1)
+                    
             
             cmi_dim = (positive.unsqueeze(-1)- negative ).mean()
 
@@ -172,7 +173,6 @@ class L1OutUB(nn.Module):  # naive upper bound
 
     def learning_loss(self, x_samples, y_samples):
         return  - self.loglikeli_mask(x_samples, y_samples)  - self.loglikeli(x_samples, y_samples)
-
 # %%
 
 
