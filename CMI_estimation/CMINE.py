@@ -223,8 +223,6 @@ def estimate_CMI(config):
     pickle.dump((True_CMI,CMI_LDR,CMI_DV,CMI_NWJ,CMI_LDR_Eval,CMI_DV_Eval,CMI_NWJ_Eval,n,dim,K,LR,EPOCH,loss_e), file)
     
     file.close()    
-    
-
 
 def estimate_CMI_DPI(config):
     #-----------------------------------------------------------------#    
@@ -388,3 +386,150 @@ def estimate_CMI_DPI(config):
     file.close()        
 
 
+def estimate_CMI_dim(config):
+    #-----------------------------------------------------------------#    
+    #--------------- Create the dataset ------------------------------#
+    #-----------------------------------------------------------------#    
+    dim = config.d
+    n = config.n
+    
+    sigma_x = config.sigma_x
+    sigma_1 = config.sigma_y
+    sigma_2 = config.sigma_z
+    arrng = config.arrng
+    
+    params = (sigma_x,sigma_1,sigma_2)
+    
+    # if config.scenario == 0: #Estimate I(X;Y|Z)
+    #     True_CMI = -dim*0.5*np.log(sigma_1**2 * (sigma_x**2+sigma_1**2 + sigma_2**2)/((sigma_x**2 + sigma_1**2)*(sigma_1**2 + sigma_2**2)))
+    # elif config.scenario == 1: #Estimate I(X;Z|Y)    
+    #     True_CMI = 0
+
+    
+    
+    K = config.k
+    b_size = config.batch_size
+    
+    #----------------------------------------------------------------------#
+    #------------------------Train the network-----------------------------#
+    #----------------------------------------------------------------------#
+    
+    # Set up neural network paramters
+    LR = config.lr
+    EPOCH = config.e
+    SEED = config.seed
+    input_size = 2*dim +1 + 1 #3*dim
+    hidden_size = 64
+    num_classes = 2
+    tau = config.tau
+    
+    NN_params = (input_size,hidden_size,num_classes,tau)
+    EVAL = False
+    
+    #Monte Carlo param
+    T = config.t
+    S = config.s
+    
+    CMI_LDR = []
+    CMI_DV = []
+    CMI_NWJ = []
+
+    #kernel based method
+    ker = config.ker
+    # RL setting
+    rl = config.rl
+    
+    for s in range(S):
+        CMI_LDR_t = []
+        CMI_DV_t = []
+        CMI_NWJ_t = []
+            
+        #Create dataset
+        #
+        if rl ==1: 
+            dataset = CMINE.create_dataset_DGP(GenModel="", Params="", Dim=dim, N=n)
+        else:
+            dataset = CMINE.create_dataset(GenModel='Gaussian_nonZero', Params=params, Dim=dim, N=n)
+
+        if ker == 1:
+            cmi_guassian = gaussian_conditional_mutual_info_highdim(dataset[0],dataset[1],dataset[2])
+            print('Guassion=',cmi_guassian) 
+
+
+
+        for t in range(T): 
+            start_time = time.time()
+            CMI_LDR_Eval=[]
+            CMI_DV_Eval=[]
+            CMI_NWJ_Eval=[]
+            LDRs = []
+            DVs = []
+            NWJs = []
+            print('Duration of data preparation: ',time.time()-start_time,' seconds')
+            for i in range(dataset[1].shape[1]):
+
+                CMI_LDR_es=[]
+                CMI_DV_es=[]
+                CMI_NWJ_es=[]
+
+                new_dataset=[dataset[0],dataset[1][:,i].reshape(-1,1), dataset[2]]
+            
+                batch_train, target_train, joint_test, prod_test = CMINE.batch_construction(data=new_dataset, arrange=arrng, set_size=b_size, K_neighbor=K)    
+                
+                
+                
+
+                start_time = time.time()
+                #Train
+                if EVAL:
+                    model, loss_e, CMI_LDR_e, CMI_DV_e, CMI_NWJ_e = CMINE.train_classifier(BatchTrain=batch_train, TargetTrain=target_train, Params=NN_params, Epoch=EPOCH, Lr=LR, Seed=SEED, Eval=True, JointEval=joint_test, ProdEval=prod_test)        
+                    CMI_LDR_es.append(CMI_LDR_e)
+                    CMI_DV_es.append(CMI_DV_e)    
+                    CMI_NWJ_es.append(CMI_NWJ_e)
+                    if i == dataset[1].shape[1]-1:
+                        CMI_LDR_Eval.append(CMI_LDR_es)
+                        CMI_DV_Eval.append(CMI_DV_es)
+                        CMI_NWJ_Eval.append(CMI_NWJ_es)
+                else:   
+                    model, loss_e = CMINE.train_classifier(BatchTrain=batch_train, TargetTrain=target_train, Params=NN_params, Epoch=EPOCH, Lr=LR, Seed=SEED)
+                
+                #Compute I(X;Y|Z)
+                CMI_est = CMINE.estimate_CMI(model, joint_test, prod_test)
+                #print(CMI_est)
+            
+                    
+                
+                
+                # if rl != 1:
+                #     print('True=',True_CMI)
+                # else:
+                #     print('True=Todo')
+                if ker == 1:
+                    print('Guassion=',cmi_guassian) 
+                
+                LDRs.append(CMI_est[0])
+                DVs.append(CMI_est[1])
+                NWJs.append(CMI_est[2])
+
+                if i == dataset[1].shape[1]-1:
+                    CMI_LDR_t.append(LDRs)
+                    CMI_DV_t.append(DVs)
+                    CMI_NWJ_t.append(NWJs)
+                    print('Print')
+                    print('LDR=',LDRs)   
+                    print('DV=',DVs)   
+                    print('NWJ=',NWJs) 
+                    print('True=Todo')
+                    print('Duration: ', time.time()-start_time, ' seconds')   
+                    
+            
+        CMI_LDR.append(np.mean(CMI_LDR_t))
+        CMI_DV.append(np.mean(CMI_DV_t))
+        CMI_NWJ.append(np.mean(CMI_NWJ_t))    
+        
+    file = open(config.directory+'/result_dim'+str(config.seed), 'wb')
+    # pickle.dump((True_CMI,CMI_LDR,CMI_DV,CMI_NWJ,CMI_LDR_Eval,CMI_DV_Eval,CMI_NWJ_Eval,n,dim,K,LR,EPOCH,loss_e), file)
+    pickle.dump((CMI_LDR,CMI_DV,CMI_NWJ,CMI_LDR_Eval,CMI_DV_Eval,CMI_NWJ_Eval,n,dim,K,LR,EPOCH,loss_e), file)
+    
+    file.close()    
+    

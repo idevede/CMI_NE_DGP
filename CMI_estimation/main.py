@@ -42,3 +42,7 @@ if conf.scenario==0 or conf.scenario==1:
 elif conf.scenario==2:
     #---- Estimate DPI Additivity  -------
     CMINE.estimate_CMI_DPI(conf)
+
+elif conf.scenario==3:
+    #---- Estimate CMI dim  -------
+    CMINE.estimate_CMI_dim(conf)

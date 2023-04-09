@@ -16,4 +16,5 @@ config.ini
 
 .vscode/
 __pycache__/
+CDL_debug/
 

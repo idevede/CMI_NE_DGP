@@ -79,6 +79,8 @@ def define_configs(args):
         config.arrng = [[0],[2],[1]]
     elif args.scenario == 2: # Test Additivity and DPI
         config = Config_Additivity()
+    elif args.scenario == 3: # Test Additivity and DPI
+        config = Config()
     else:
         raise ValueError("Invalid choice of configuration")
 
