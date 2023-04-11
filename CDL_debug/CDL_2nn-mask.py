@@ -89,7 +89,7 @@ class L1OutUB(nn.Module):  # naive upper bound
         x_samples = self.linear_map(x_samples)
 
        
-        neg_inf = torch.finfo(x_samples.dtype).min  # 负无穷的值，与张量的数据类型匹配
+        neg_inf = torch.finfo(x_samples.dtype).min  
 
 
         max_values= torch.mean(x_samples, dim = 1)
@@ -105,7 +105,7 @@ class L1OutUB(nn.Module):  # naive upper bound
             
             for i in range(x_samples.shape[1]-1):
                 x_new = x_samples.clone()
-                x_new[:, i, :] = float(0) #neg_inf  # 使用fill_方法替换指定维度为负无穷
+                x_new[:, i, :] = float(0) #neg_inf  
 
                 #x_new = x_samples.masked_fill(x_samples.new_zeros(x_samples.size()).bool()[:, i, :], float('-inf'))
                 #max_values, max_indices = torch.max(x_new, dim=1)
