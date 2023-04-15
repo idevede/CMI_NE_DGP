@@ -1,0 +1,208 @@
+
+
+@article{kumar2018false,
+  title={False information on web and social media: A survey},
+  author={Kumar, Srijan and Shah, Neil},
+  journal={arXiv preprint arXiv:1804.08559},
+  year={2018}
+}
+
+
+@article{sharma2019combating,
+  title={Combating Fake News: A Survey on Identification and Mitigation Techniques},
+  author={Sharma, Karishma and Qian, Feng and Jiang, He and Ruchansky, Natali and Zhang, Ming and Liu, Yan},
+  journal={ACM TIST},
+  year={2019}
+}
+
+@article{sharma2020coronavirus,
+  title={Coronavirus on social media: Analyzing misinformation in Twitter conversations},
+  author={Sharma, Karishma and Seo, Sungyong and Meng, Chuizheng and Rambhatla, Sirisha and Liu, Yan},
+  journal={arXiv preprint arXiv:2003.12309},
+  year={2020}
+}
+
+@inproceedings{sharma2020identifying,
+  title={Identifying Coordinated Accounts on Social Media through Hidden Influence and Group Behaviours},
+  author={Sharma, Karishma and Zhang, Yizhou and Ferrara, Emilio and Liu, Yan},
+  booktitle={Proceedings of the 27th ACM SIGKDD Conference on Knowledge Discovery \& Data Mining},
+  pages={1441--1451},
+  year={2021}
+}
+
+@article{zhang2021vigdet,
+  title={VigDet: Knowledge Informed Neural Temporal Point Process for Coordination Detection on Social Media},
+  author={Zhang, Yizhou and Sharma, Karishma and Liu, Yan},
+  journal={Advances in Neural Information Processing Systems},
+  volume={34},
+  year={2021}
+}
+
+@inproceedings{sharma2021covid,
+  title={COVID-19 Vaccine Misinformation Campaigns and Social Media Narratives},
+  author={Sharma, Karishma and Zhang, Yizhou and Liu, Yan},
+  booktitle={Proceedings of the International AAAI Conference on Web and Social Media},
+  volume={16},
+  pages={920--931},
+  year={2022}
+}
+
+@inproceedings{
+zhang2022counterfactual,
+title={Counterfactual Neural Temporal Point Process for Estimating Causal Influence of Misinformation on Social Media},
+author={Yizhou Zhang and Defu Cao and Yan Liu},
+booktitle={Advances in Neural Information Processing Systems},
+editor={Alice H. Oh and Alekh Agarwal and Danielle Belgrave and Kyunghyun Cho},
+year={2022},
+}
+
+@inproceedings{sharma2022characterizing,
+  title={Characterizing online engagement with disinformation and conspiracies in the 2020 US presidential election},
+  author={Sharma, Karishma and Ferrara, Emilio and Liu, Yan},
+  booktitle={Proceedings of the International AAAI Conference on Web and Social Media},
+  volume={16},
+  pages={908--919},
+  year={2022}
+}
+
+@InProceedings{Trinh_2021_WACV,
+    author    = {Trinh, Loc and Tsang, Michael and Rambhatla, Sirisha and Liu, Yan},
+    title     = {Interpretable and Trustworthy Deepfake Detection via Dynamic Prototypes},
+    booktitle = {Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision (WACV)},
+    month     = {January},
+    year      = {2021},
+    pages     = {1973-1983}
+}
+
+
+
+
+@inproceedings{jaiswal2017multimedia,
+  title={Multimedia semantic integrity assessment using joint embedding of images and text},
+  author={Jaiswal, Ayush and Sabir, Ekraam and AbdAlmageed, Wael and Natarajan, Premkumar},
+  booktitle={Proceedings of the 25th ACM international conference on Multimedia},
+  pages={1465--1471},
+  year={2017}
+}
+
+@inproceedings{luo2021newsclippings,
+  title={NewsCLIPpings: Automatic Generation of Out-of-Context Multimodal Media},
+  author={Luo, Grace and Darrell, Trevor and Rohrbach, Anna},
+  booktitle={Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing},
+  pages={6801--6817},
+  year={2021}
+}
+
+@inproceedings{huang2022text,
+  title={Text-Image De-Contextualization Detection Using Vision-Language Models},
+  author={Huang, Mingzhen and Jia, Shan and Chang, Ming-Ching and Lyu, Siwei},
+  booktitle={ICASSP 2022-2022 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)},
+  pages={8967--8971},
+  year={2022},
+  organization={IEEE}
+}
+
+@inproceedings{sharma2022construction,
+  title={Construction of Large-Scale Misinformation Labeled Datasets from Social Media Discourse using Label Refinement},
+  author={Sharma, Karishma and Ferrara, Emilio and Liu, Yan},
+  booktitle={Proceedings of the ACM Web Conference 2022},
+  pages={3755--3764},
+  year={2022}
+}
+
+@article{yi2018neural,
+  title={Neural-symbolic vqa: Disentangling reasoning from vision and language understanding},
+  author={Yi, Kexin and Wu, Jiajun and Gan, Chuang and Torralba, Antonio and Kohli, Pushmeet and Tenenbaum, Josh},
+  journal={Advances in neural information processing systems},
+  volume={31},
+  year={2018}
+}
+
+@article{zhu2022generalization,
+  title={Generalization Differences between End-to-End and Neuro-Symbolic Vision-Language Reasoning Systems},
+  author={Zhu, Wang and Thomason, Jesse and Jia, Robin},
+  journal={arXiv preprint arXiv:2210.15037},
+  year={2022}
+}
+
+@inproceedings{banarescu2013abstract,
+  title={Abstract meaning representation for sembanking},
+  author={Banarescu, Laura and Bonial, Claire and Cai, Shu and Georgescu, Madalina and Griffitt, Kira and Hermjakob, Ulf and Knight, Kevin and Koehn, Philipp and Palmer, Martha and Schneider, Nathan},
+  booktitle={Proceedings of the 7th linguistic annotation workshop and interoperability with discourse},
+  pages={178--186},
+  year={2013}
+}
+
+@inproceedings{radford2021learning,
+  title={Learning transferable visual models from natural language supervision},
+  author={Radford, Alec and Kim, Jong Wook and Hallacy, Chris and Ramesh, Aditya and Goh, Gabriel and Agarwal, Sandhini and Sastry, Girish and Askell, Amanda and Mishkin, Pamela and Clark, Jack and others},
+  booktitle={International conference on machine learning},
+  pages={8748--8763},
+  year={2021},
+  organization={PMLR}
+}
+
+
+@inproceedings{khattar2019mvae,
+  title={MVAE: Multimodal Variational Autoencoder for Fake News Detection},
+  author={Khattar, Dhruv and Goud, Jaipal Singh and Gupta, Manish and Varma, Vasudeva},
+  booktitle={The World Wide Web Conference},
+  pages={2915--2921},
+  year={2019},
+  organization={ACM}
+}
+
+@inproceedings{zhou2020similarity,
+  title={SAFE: Similarity-Aware Multi-modal Fake News Detection},
+  author={Zhou, Xinyi and Wu, Jindi and Zafarani, Reza},
+  booktitle={Advances in Knowledge Discovery and Data Mining: 24th Pacific-Asia Conference, PAKDD 2020, Singapore, May 11--14, 2020, Proceedings, Part II},
+  pages={354--367},
+  year={2020},
+  organization={Springer}
+}
+
+@article{shu2017fake,
+  title={Fake news detection on social media: A data mining perspective},
+  author={Shu, Kai and Sliva, Amy and Wang, Suhang and Tang, Jiliang and Liu, Huan},
+  journal={ACM SIGKDD Explorations Newsletter},
+  volume={19},
+  number={1},
+  pages={22--36},
+  year={2017},
+  publisher={ACM}
+}
+
+@inproceedings{qian2018neural,
+  title={Neural User Response Generator: Fake News Detection with Collective User Intelligence.},
+  author={Qian, Feng and Gong, Chengyue and Sharma, Karishma and Liu, Yan},
+  booktitle={IJCAI},
+  volume={3834},
+  pages={3840},
+  year={2018}
+}
+
+@article{li2019visualbert,
+  title={Visualbert: A simple and performant baseline for vision and language},
+  author={Li, Liunian Harold and Yatskar, Mark and Yin, Da and Hsieh, Cho-Jui and Chang, Kai-Wei},
+  journal={arXiv preprint arXiv:1908.03557},
+  year={2019}
+}
+
+@Article{luo2013identifying,
+  author    = {Luo, Wuqiong and Tay, Wee Peng and Leng, Mei},
+  title     = {Identifying infection sources and regions in large networks},
+  journal   = {IEEE Transactions on Signal Processing},
+  year      = {2013},
+  volume    = {61},
+  number    = {11},
+  pages     = {2850--2865},
+  abstract  = {not relevant},
+  publisher = {IEEE},
+}
+
+
+
+
+
+
+
