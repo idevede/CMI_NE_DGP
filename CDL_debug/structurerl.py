@@ -60,7 +60,7 @@ def get_trajectories(N_traj, env, MDP_info, T, policy):
     Rx__=np.zeros([N_traj,T]); Re__=np.zeros([N_traj,T])
     A__ = np.zeros([N_traj, T,p_A])
     for n in range(N_traj):
-        [X_, Endo_, Rx_, Re_, R, A_] = env(MDP_info, T, policy)
+        [X_, Endo_, Rx_, Re_, R, A_] = env(MDP_info, T, policy) # exo_endo_mdp_linear(MDP_info, T, policy)
         X__[n,:]=X_; Endo__[n,:] = Endo_; Rx__[n,:] = Rx_; Re__[n,:] = Re_; A__[n,:] = A_
     return [X__, Endo__, Rx__, Re__, A__]
 

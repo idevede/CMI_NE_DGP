@@ -12,6 +12,7 @@ from structurerl import *
 from pingouin import partial_corr
 import statsmodels.api as sm
 import pandas as pd
+import random
 
 
 def sample_batch(data, arrange=[[0],[1],[2]], batch_size=100, sample_mode='joint', K_neighbor=10, radius=1000):
@@ -329,16 +330,19 @@ def create_dataset(GenModel, Params, Dim, N):
 def policy(X,E): 
     return 5*(np.mean(E)-1)
 
+def policy_binary(X,E): 
+    return float(random.randint(0, 1))
+
 def noisy_policy(X,E): 
     return np.mean(X)+np.sign(np.mean(E)-1)*np.mean(E) + np.random.normal()
 
 
-def create_dataset_DGP(GenModel, Params, Dim, N, T = 5):
+def create_dataset_DGP(Dim, N, T = 5):
     # If the dataset=(x,y,z) we compute I(X;Y|Z) 
     p_endo= Dim
     p_exo = Dim
     p = p_endo+p_exo
-    p_A = 1
+    p_A = 1 # the dimension of the action space
     [Mx,Mendo] = gen_M(p_endo, p_exo, p_A)
     MDP_info = [Mx,Mendo,p_endo,p_exo,p_A]   
     
@@ -356,6 +360,33 @@ def create_dataset_DGP(GenModel, Params, Dim, N, T = 5):
     StA_St1A = np.concatenate([StA,StA_next, np.expand_dims(Re__[:,:-1],2)],axis=2) ## S_{t}[0:30] A[30] S_{t+1}[31:61] R[61]
     
     dataset = [StA[:,0,:-1],StA_next[:,0,:],StA[:,0,-1:]]
+
+
+    return dataset
+
+def create_dataset_DGP_binary_A(Dim, N, T = 5):
+    # If the dataset=(x,y,z) we compute I(X;Y|Z) 
+    p_endo= Dim
+    p_exo = Dim
+    p = p_endo+p_exo
+    p_A = 1 # the dimension of the action space
+    [Mx,Mendo] = gen_M(p_endo, p_exo, p_A)
+    MDP_info = [Mx,Mendo,p_endo,p_exo,p_A]   
+    
+    #T = T
+    # [X_, Endo_, Rx_, Re_, R, A_] = exo_endo_mdp_linear(MDP_info, T, policy)
+    N_traj = N
+    [X__, Endo__, Rx__, Re__, A__] = get_trajectories(N_traj, exo_endo_mdp_linear, MDP_info, T, policy_binary)
+    # (S_t,A_t, R_t,S_{t+1}) tuples for t = 1,T-1
+    StA = np.concatenate([X__, Endo__, A__],axis = 2)[:,:-1,:]
+    StA_next = np.concatenate([X__, Endo__],axis=2)[:,1:,:] # start from t=1
+    # column indices: 
+    # 0:p is S_t, p:p+p_a is action variable, p+p_a:-2 is S_t+1, -1 is reward'
+    # 0:pexo is exogenous; pexo:-1 is endo 
+    # N_traj x T-1 x (p + p_A + 1 + p) (state, action, reward, s_t1)
+    StA_St1A = np.concatenate([StA,StA_next, np.expand_dims(Re__[:,:-1],2)],axis=2) ## S_{t}[0:30] A[30] S_{t+1}[31:61] R[61]
+    
+    dataset = [StA[:,1,:-1],StA_next[:,1,:],StA[:,1,-1:]]
 
 
     return dataset
