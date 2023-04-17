@@ -98,8 +98,8 @@ class DR_CML(nn.Module):  # naive upper bound
         propensity_score = F.sigmoid(propensity)
         # y = ( x_samples[:,-1] == -5).float() ## 将类别标签转换为 0 和 1
         # loss = F.binary_cross_entropy(out, y.unsqueeze(-1))
-        w_1 = 1 / (propensity_score+0.0001)
-        w_0 = 1 / (1-propensity_score+0.0001)
+        w_1 = 1 / propensity_score
+        w_0 = 1 / (1-propensity_score)
         
 
         # #将 mask 对应位置上的值设置为0
@@ -147,22 +147,21 @@ class DR_CML(nn.Module):  # naive upper bound
             
             cmi_dim_0 = (positive.unsqueeze(-1)- negative )[inds_0].mean() # 64,10 ->1
             cmi_dim_1 = (positive.unsqueeze(-1)- negative )[inds_1].mean() # 64,10 ->1
-
+            cmi_dim = (positive.unsqueeze(-1)- negative ).mean() # 64,10 ->1
             dr = 0.5*((cmi_dim_0 + w_0[inds_0]*((positive.unsqueeze(-1)- negative)[inds_0] -cmi_dim_0))).mean()
 
             dr += 0.5*((cmi_dim_1 + w_1[inds_1]*((positive.unsqueeze(-1)- negative)[inds_1] -cmi_dim_1))).mean()
             
-            #print(w_0[inds_0].mean(), w_1[inds_1].mean())
             # dr = 0.5*((cmi_dim_0 + 2*((positive.unsqueeze(-1)- negative)[inds_0] -cmi_dim_0))).mean()
 
             # dr += 0.5*((cmi_dim_1 + 2*((positive.unsqueeze(-1)- negative)[inds_1] -cmi_dim_1))).mean()
 
 
             cmi_dims.append((cmi_dim_0+cmi_dim_1).abs().item()/2)
-            
-            drs.append(dr.abs().item())
+            drs.append(cmi_dim.abs().item())
+            #drs.append(dr.abs().item())
 
-        #print(drs)
+       
         return cmi_dims, drs
     
     def loglikeli(self, x_samples, y_samples):
@@ -226,7 +225,7 @@ class DR_CML(nn.Module):  # naive upper bound
         x_samples = x_samples.unsqueeze(-1)
         x_samples = self.linear_map(x_samples)
 
-        return  - self.loglikeli_mask(x_samples, y_samples)  - self.loglikeli(x_samples, y_samples) +  loss
+        return  - self.loglikeli_mask(x_samples, y_samples)  - self.loglikeli(x_samples, y_samples) #+loss
 
 
 Dim = 5
@@ -242,7 +241,7 @@ sample_dim = 2*Dim
 
 hidden_size = 15
 learning_rate = 0.005
-training_steps = 40
+training_steps = 40 #100
 
 cubic = False 
 
