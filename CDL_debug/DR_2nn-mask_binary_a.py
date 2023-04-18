@@ -152,7 +152,7 @@ class DR_CML(nn.Module):  # naive upper bound
 
             dr += 0.5*((cmi_dim_1 + w_1[inds_1]*((positive.unsqueeze(-1)- negative)[inds_1] -cmi_dim_1))).mean()
             
-            #print(w_0[inds_0].mean(), w_1[inds_1].mean())
+            # print(w_0[inds_0].mean(), w_1[inds_1].mean())
             # dr = 0.5*((cmi_dim_0 + 2*((positive.unsqueeze(-1)- negative)[inds_0] -cmi_dim_0))).mean()
 
             # dr += 0.5*((cmi_dim_1 + 2*((positive.unsqueeze(-1)- negative)[inds_1] -cmi_dim_1))).mean()
@@ -242,7 +242,7 @@ sample_dim = 2*Dim
 
 hidden_size = 15
 learning_rate = 0.005
-training_steps = 40
+training_steps = 10
 
 cubic = False 
 
