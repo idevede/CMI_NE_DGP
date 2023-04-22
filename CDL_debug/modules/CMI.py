@@ -64,11 +64,17 @@ class DR_CMI(nn.Module):  # naive upper bound
         drs = []
 
         propensity = self.p_score(x_samples[:, :-1])#.squeeze(-1)
-        propensity_score = F.sigmoid(propensity)
+        #print("x_samples",x_samples[:, -1])
+        propensity_score = torch.sigmoid(propensity)
         # y = ( x_samples[:,-1] == -5).float() ## 将类别标签转换为 0 和 1
         # loss = F.binary_cross_entropy(out, y.unsqueeze(-1))
-        w_1 = 1 / (propensity_score+0.0001)
-        w_0 = 1 / (1-propensity_score+0.0001)
+        propensity_score = torch.where(propensity_score < 0.0001, torch.tensor([0.0001]).to(propensity_score.device), propensity_score)
+        propensity_score = torch.where(propensity_score > 0.9999, torch.tensor([0.9999]).to(propensity_score.device), propensity_score)
+        #print(propensity_score)
+        w_1 = 1 / (propensity_score)
+        w_0 = 1 / (1-propensity_score)
+        # print(w_1)
+        # print(w_0)
         
         inds_1 = np.where(x_samples.cpu().numpy()[:,-1] ==1.0 ) # 找到B中不为0的位置
         inds_0 = np.where(x_samples.cpu().numpy()[:,-1] ==0.0 ) # 找到B中不为0的位置
@@ -106,12 +112,23 @@ class DR_CMI(nn.Module):  # naive upper bound
             cmi_dim_0 = (positive.unsqueeze(-1)- negative )[inds_0].mean() # 64,10 ->1
             cmi_dim_1 = (positive.unsqueeze(-1)- negative )[inds_1].mean() # 64,10 ->1
 
-            dr = 0.5*((cmi_dim_0 + w_0[inds_0]*((positive.unsqueeze(-1)- negative)[inds_0] -cmi_dim_0))).mean()
-
-            dr += 0.5*((cmi_dim_1 + w_1[inds_1]*((positive.unsqueeze(-1)- negative)[inds_1] -cmi_dim_1))).mean()
-            
-
-
+            dr_0 = w_0[inds_0]*((positive.unsqueeze(-1)- negative)[inds_0] -cmi_dim_0)
+            dr_1 = w_1[inds_1]*((positive.unsqueeze(-1)- negative)[inds_1] -cmi_dim_1)
+            if  torch.isnan(dr_0.mean()) or torch.isnan(dr_1.mean()):
+                dr = (positive.unsqueeze(-1)- negative).mean()#0.5*cmi_dim_0  + 0.5*cmi_dim_1
+                #print(positive.unsqueeze(-1)- negative)
+                # print(cmi_dim_0)
+                # print(dr)
+                #0.5*((cmi_dim_0 + w_0[inds_0]*((positive.unsqueeze(-1)- negative)[inds_0] -cmi_dim_0))).mean()
+            else:
+                dr = 0.5*((cmi_dim_0 + dr_0)).mean() + 0.5*((cmi_dim_1 + dr_1)).mean()
+            # print((w_0[inds_0]*((positive.unsqueeze(-1)- negative)[inds_0] -cmi_dim_0)).mean())
+            # print((w_1[inds_1]*((positive.unsqueeze(-1)- negative)[inds_1] -cmi_dim_1)).mean())
+            # if not torch.isnan((w_1[inds_1]*((positive.unsqueeze(-1)- negative)[inds_1] -cmi_dim_1)).mean() ):
+            #     dr += 0.5*((cmi_dim_1 + w_1[inds_1]*((positive.unsqueeze(-1)- negative)[inds_1] -cmi_dim_1))).mean()
+            # else:
+            #     dr += 0.5*cmi_dim_1
+           
             #cmi_dims.append((cmi_dim_0+cmi_dim_1).abs().item()/2)
             
             drs.append(dr.abs().item())
@@ -171,7 +188,7 @@ class DR_CMI(nn.Module):  # naive upper bound
 
     def learning_loss(self, x_samples, y_samples):
         propensity = self.p_score(x_samples[:, :-1])#.squeeze(-1)
-        out = F.sigmoid(propensity)
+        out = torch.sigmoid(propensity)
         #y = ( x_samples[:,-1] == -5).float() ## 将类别标签转换为 0 和 1
         y = ( x_samples[:,-1] == 1.0).float() ## 将类别标签转换为 0 和 1
         #print(y)
