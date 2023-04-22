@@ -114,12 +114,22 @@ class DR_CMI(nn.Module):  # naive upper bound
 
             dr_0 = w_0[inds_0]*((positive.unsqueeze(-1)- negative)[inds_0] -cmi_dim_0)
             dr_1 = w_1[inds_1]*((positive.unsqueeze(-1)- negative)[inds_1] -cmi_dim_1)
-            if  torch.isnan(dr_0.mean()): 
-                dr = (cmi_dim_1 + dr_1).mean()
-            elif torch.isnan(dr_1.mean()):
-                dr = (cmi_dim_0 + dr_0).mean()
+            if  torch.isnan(dr_0.mean()) or torch.isnan(dr_1.mean()):
+                dr = (positive.unsqueeze(-1)- negative).mean()#0.5*cmi_dim_0  + 0.5*cmi_dim_1
+                #print(positive.unsqueeze(-1)- negative)
+                # print(cmi_dim_0)
+                # print(dr)
+                #0.5*((cmi_dim_0 + w_0[inds_0]*((positive.unsqueeze(-1)- negative)[inds_0] -cmi_dim_0))).mean()
             else:
-                dr = ((cmi_dim_0 + dr_0)).mean() + ((cmi_dim_1 + dr_1)).mean()
+                dr = 0.5*((cmi_dim_0 + dr_0)).mean() + 0.5*((cmi_dim_1 + dr_1)).mean()
+            # print((w_0[inds_0]*((positive.unsqueeze(-1)- negative)[inds_0] -cmi_dim_0)).mean())
+            # print((w_1[inds_1]*((positive.unsqueeze(-1)- negative)[inds_1] -cmi_dim_1)).mean())
+            # if not torch.isnan((w_1[inds_1]*((positive.unsqueeze(-1)- negative)[inds_1] -cmi_dim_1)).mean() ):
+            #     dr += 0.5*((cmi_dim_1 + w_1[inds_1]*((positive.unsqueeze(-1)- negative)[inds_1] -cmi_dim_1))).mean()
+            # else:
+            #     dr += 0.5*cmi_dim_1
+           
+            #cmi_dims.append((cmi_dim_0+cmi_dim_1).abs().item()/2)
             
             drs.append(dr.abs().item())
 

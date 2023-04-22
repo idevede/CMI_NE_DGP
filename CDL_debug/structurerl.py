@@ -100,8 +100,8 @@ def policy_binary(X,E):
 
 def policy_conf_binary(X,E):
     prob = np.mean(X)+np.sign(np.mean(E)-1)*np.mean(E)
-    prob = np.abs(prob)*np.random.normal()*0.5
-    prob = np.clip(prob, 0, 1)
+    prob = np.abs(prob)*np.random.normal()
+    prob = np.clip(prob, 0.2, 0.8)
     #print(prob)
     return float(np.random.choice([0, 1], size=1, p=[prob , 1-prob]))
 
