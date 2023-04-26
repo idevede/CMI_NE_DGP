@@ -7,13 +7,13 @@ import CMINE
 
 parser = argparse.ArgumentParser(description='provide arguments for DI estimation')
 parser.add_argument('--n',              type=int,       default=None,     help='Number of samples')
-parser.add_argument('--d',              type=int,       default=None,     help='Dimension of data')
-parser.add_argument('--k',              type=int,       default=None,     help='k, the parameter of the kNN method')
+parser.add_argument('--d',              type=int,       default=5,     help='Dimension of data')
+parser.add_argument('--k',              type=int,       default=20,     help='k, the parameter of the kNN method')
 parser.add_argument('--sigma_x',        type=float,     default=None,     help='Sigma_x in the model')
 parser.add_argument('--sigma_y',        type=float,     default=None,     help='Sigma_y in the model')
 parser.add_argument('--sigma_z',        type=float,     default=None,     help='Sigma_z in the model')
 parser.add_argument('--q',        type=float,     default=None,     help='Correlated coefficient')
-parser.add_argument('--scenario',       type=int,       default=None,     help='0--> Estimate I(X;Y|Z)'
+parser.add_argument('--scenario',       type=int,       default=3,     help='0--> Estimate I(X;Y|Z)'
                                                                                '1--> Estimate I(X;Z|Y)'
                                                                                '2--> Test additivity and DPI')
 parser.add_argument('--lr',             type=float,     default=None,     help='Learning Rate')
