@@ -410,7 +410,7 @@ def train(params):
 
             acc = 100.0 * n_correct / n_samples
             print(f'Testing accuracy over {n_samples} samples: {n_correct} / {n_samples} = {acc}%')
-
+            # defu 
 
 if __name__ == "__main__":
     params = TrainingParams(training_params_fname="policy_params.json", train=True)
