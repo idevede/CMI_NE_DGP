@@ -11,6 +11,8 @@
 *.swp
 *.cache
 
+rslts/
+
 # 忽略配置文件
 config.ini
 
