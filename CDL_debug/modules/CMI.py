@@ -68,8 +68,8 @@ class DR_CMI(nn.Module):  # naive upper bound
         propensity_score = torch.sigmoid(propensity)
         # y = ( x_samples[:,-1] == -5).float() ## 将类别标签转换为 0 和 1
         # loss = F.binary_cross_entropy(out, y.unsqueeze(-1))
-        propensity_score = torch.where(propensity_score < 0.0001, torch.tensor([0.0001]).to(propensity_score.device), propensity_score)
-        propensity_score = torch.where(propensity_score > 0.9999, torch.tensor([0.9999]).to(propensity_score.device), propensity_score)
+        propensity_score = torch.where(propensity_score < 0.01, torch.tensor([0.01]).to(propensity_score.device), propensity_score)
+        propensity_score = torch.where(propensity_score > 0.99, torch.tensor([0.99]).to(propensity_score.device), propensity_score)
         #print(propensity_score)
         w_1 = 1 / (propensity_score)
         w_0 = 1 / (1-propensity_score)
@@ -115,11 +115,11 @@ class DR_CMI(nn.Module):  # naive upper bound
             dr_0 = w_0[inds_0]*((positive.unsqueeze(-1)- negative)[inds_0] -cmi_dim_0)
             dr_1 = w_1[inds_1]*((positive.unsqueeze(-1)- negative)[inds_1] -cmi_dim_1)
             if  torch.isnan(dr_0.mean()): 
-                dr = (cmi_dim_1 + dr_1).mean()
+                dr = (cmi_dim_1 + dr_1).mean()/ w_1[inds_1].mean()
             elif torch.isnan(dr_1.mean()):
-                dr = (cmi_dim_0 + dr_0).mean()
+                dr = (cmi_dim_0 + dr_0).mean()/ w_0[inds_0].mean()
             else:
-                dr = ((cmi_dim_0 + dr_0)).mean() + ((cmi_dim_1 + dr_1)).mean()
+                dr = ((cmi_dim_0 + dr_0)).mean()/w_0[inds_0].mean() + ((cmi_dim_1 + dr_1)).mean()/w_1[inds_1].mean()
             
             drs.append(dr.abs().item())
 
